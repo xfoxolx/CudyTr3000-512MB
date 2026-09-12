@@ -13,15 +13,11 @@
 # Uncomment a feed source
 #sed -i 's/^#\(.*helloworld\)/\1/' feeds.conf.default
 
-# Add a feed source
-#echo 'src-git helloworld https://github.com/fw876/helloworld' >>feeds.conf.default
-#echo 'src-git passwall https://github.com/xiaorouji/openwrt-passwall' >>feeds.conf.default
+# Add Nikki proxy feed
+printf '%s\n' 'src-git nikki https://github.com/nikkinikki-org/OpenWrt-nikki.git;main' >> feeds.conf.default
 
-# Copy custom local packages into OpenWrt tree so they are available during build
-if [ -d "$GITHUB_WORKSPACE/package/luci-compat-keep" ]; then
-  mkdir -p package
-  cp -r "$GITHUB_WORKSPACE/package/luci-compat-keep" package/
-fi
+# Add the 512MB TR3000 target to the upstream tree.
+patch -p1 < "$GITHUB_WORKSPACE/patches/512m.patch"
 
 git clone https://github.com/eamonxg/luci-theme-aurora package/luci-theme-aurora
 git clone https://github.com/eamonxg/luci-app-aurora-config package/luci-app-aurora-config

@@ -55,7 +55,6 @@ jobs:
         run: |
           cd ./wrt/
           SOC=mt7981 BOARD=cudy_tr3000-v1-256mb VERSION=2025 MULTI_LAYOUT=0 ./build.sh
-          SOC=mt7981 BOARD=cudy_tr3000-v1 VERSION=2025 MULTI_LAYOUT=1 ./build.sh
 
       - name: 📦 Package Firmware
         run: |
@@ -66,6 +65,7 @@ jobs:
 
           for FILE in $(find ./output/ -type f -iname "*.*"); do
             BASENAME=$(basename "$FILE")
+            BASENAME="${BASENAME//cudy_tr3000-v1-256mb/cudy_tr3000-v1-512mb}"
             NAME="${BASENAME%.*}"
             EXT="${BASENAME##*.}"
             NEW_FILE="${NAME}_${WRT_DATE}.${EXT}"
@@ -88,7 +88,7 @@ jobs:
           **🌿 Branch:** $WRT_BRANCH
           **📱 ATF:** atf-20250711
           **📱 MTK:** uboot-mtk-20250711
-          **📱 Device:** cudy_tr3000 128M/256M
+          **📱 Device:** cudy_tr3000 512M Flash
           **📅 Build Date:** $BUILD_TIME
 
           ## 📥 Download
@@ -97,7 +97,7 @@ jobs:
 
           ## 🚧 Notice
 
-          该固件为 DHCP uboot, 128M uboot 为三分区布局，支持原厂 ubi 大小 64MB，扩容 ubi 分区 112MB，最大 ubi 分区 122MB，256M uboot 为单分区布局。
+          该固件为 DHCP U-Boot，使用单分区布局，适用于本项目的 512M Flash。发布文件统一命名为 `cudy_tr3000-v1-512mb`。底层构建复用上游的单分区配置，其 UBI 使用剩余全部 Flash 空间，并不限制 Flash 容量为 256M。
 
           ---
 

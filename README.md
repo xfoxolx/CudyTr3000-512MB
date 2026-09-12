@@ -8,18 +8,9 @@
 
 ## immortalwrt 源码
 
-编译自 https://github.com/padavanonly/immortalwrt-mt798x-6.6 ，兼容 Cudy Tr3000 128M 新 flash
+编译自 https://github.com/padavanonly/immortalwrt-mt798x-6.6 ，适用于 Cudy TR3000 512M Flash。
 
----
-
-## 大分区 ubootmod 固件
-
-本仓库默认编译的 ubootmod 固件为 112M 分区，若你想编译 122M 分区固件，请将 `diy-part2.sh` 中取消以下注释：
-
-```sh
-# set ubi to 122M
-# sed -i 's/reg = <0x5c0000 0x7000000>;/reg = <0x5c0000 0x7a40000>;/' target/linux/mediatek/dts/mt7981b-cudy-tr3000-v1-ubootmod.dts
-```
+512M 版本使用新增的 `cudy_tr3000-v1-512mb` 设备目标，UBI 分区约 506MiB；其硬件布局沿用 256M 版本，刷写时使用对应的 512M 固件。
 
 ---
 
@@ -29,9 +20,7 @@
 
 ![](/uboot.png)
 
-128M uboot 为三分区 uboot 支持原厂 ubi 大小 64MB，扩容 ubi 分区 112MB，最大 ubi 分区 122MB
-
-256M uboot 为单分区 uboot
+本项目使用单分区 DHCP U-Boot，发布文件命名为 `cudy_tr3000-v1-512mb`。其 UBI 使用剩余全部 Flash 空间，因此适用于 512M Flash。
 
 ---
 
@@ -55,7 +44,7 @@ echo 1 > /sys/class/gpio/modem_power/value
 
 ## 第三方软件包
 
-- [OpenClash](https://github.com/vernesong/OpenClash)
+- [Nikki](https://github.com/nikkinikki-org/OpenWrt-nikki)
 - [Bandix](https://github.com/timsaya/luci-app-bandix)
 - [luci-theme-aurora](https://github.com/eamonxg/luci-theme-aurora)
 - [luci-app-aurora-config](https://github.com/eamonxg/luci-app-aurora-config)
